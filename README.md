@@ -2,5 +2,4 @@ RoboticsAssignment
 ==================
 
 Robotics Assignment for CAP 6671
-Awrad is signed in
-Someone signed in
+This assignment uses the TeamBots Robot Simulator as the base simulator for running our assignment.
