@@ -1,0 +1,11 @@
+/AckMessage.class
+/CommunicationException.class
+/LongMessage.class
+/Message.class
+/PositionMessage.class
+/RegisterMessage.class
+/ReinforcementMessage.class
+/StringMessage.class
+/TerminateMessage.class
+/Transceiver.class
+/TransceiverHard.class
