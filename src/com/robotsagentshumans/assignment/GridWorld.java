@@ -144,15 +144,16 @@ public class GridWorld {
 		}
 		return goalStateReached;
 	}
-//	public int getGoalState()
-//	{
-//		return goalState;
-//	}
-//	public int getCurrentState()
-//	{
-//		//return current state.
-//		return currentState;
-//	}
+	public String getGoalState()
+	{
+		return goalState.getStateID();
+	}
+	
+	public String getCurrentState()
+	{
+		//return current state.
+		return currentState.getStateID();
+	}
 	
 	/*
 	 * Debugging method, may be used for following the CurrentState of the Robot later.
