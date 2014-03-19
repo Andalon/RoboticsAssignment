@@ -2,3 +2,10 @@
 /SchemaDemo.class
 /GridWorld.class
 /Grid.class
+/Astar.class
+/ClosedTreeComparator.class
+/Coordinate.class
+/Move.class
+/PQComparator.class
+/PathObject.class
+/Tuple.class
