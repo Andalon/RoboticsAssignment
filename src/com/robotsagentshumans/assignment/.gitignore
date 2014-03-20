@@ -13,3 +13,5 @@
 /State.class
 /DSCWriter.class
 /AgentAssignmentStart.class
+/QEnvironment.class
+/QLearner.class
