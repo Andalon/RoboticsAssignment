@@ -560,6 +560,26 @@ public class SimulationCanvas extends Canvas implements Runnable
 					}
 
 
+//				/*--- David Griffen Adding a Grid Object Statement---*/
+//				if (token.equalsIgnoreCase("gridobject"))
+//				{
+//					if (in.nextToken()==StreamTokenizer.TT_WORD)
+//						string1 = in.sval;
+//					else
+//					{
+//						token = in.sval; //for error report
+//						throw new IOException();
+//					}
+//					if (in.nextToken()==StreamTokenizer.TT_NUMBER)
+//					{
+//						x1 = in.nval;
+//					}
+//					else
+//					{
+//						token = in.sval; // for error report
+//						throw new IOException();
+//					}
+//				}
 				/*--- it is a linearobject statement ---*/
 				//FORMAT linearobject objectclass 
 				//	x1 y1 x2 y2 r color1 color2 visionclass

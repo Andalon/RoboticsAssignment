@@ -1,8 +1,12 @@
 package com.robotsagentshumans.assignment;
 
 import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * GridWorld used for the Robotics Simulation. It is statically designed to be a 10x10 grid, recommended to use a simulation 
@@ -26,8 +30,13 @@ public class GridWorld {
 	private Random random;
 	public State[][] gridWorld;
 	
-	public GridWorld()
+	/**
+	 * Constructor method for creating the GridWorld and setting up the CurrentState, GoalState and Obstacles from file.
+	 * @param obstacleFile
+	 */
+	public GridWorld(File obstacleFile)
 	{  
+		BufferedReader br = null;
 		gridWorld = new State[10][10];
 		//current state is set randomly here, but can be made to initialize at a set point if desired.
 		//goal state is set randomly here, but can be made to initialize at a set point if desired.
@@ -36,12 +45,29 @@ public class GridWorld {
 		setStateXYCoords();
 		//setStateRandomXYCoords();
 		initGrid(gridWorld, 10, 10);
-		goalState = gridWorld[goalStateY][goalStateX];
-		
+		goalState = gridWorld[goalStateY][goalStateX];		
 		currentState = gridWorld[currentStateY][currentStateX];
+		
+		//Initialize the occupied grid points.
+		try {
+			Scanner in = new Scanner(obstacleFile);
+			String input;
+			int inputX;
+			int inputY;
+			while (in.hasNext())
+			{
+				input = in.next();
+				inputY = Character.getNumericValue(input.charAt(0));
+				inputX = Character.getNumericValue(input.charAt(1));
+				gridWorld[inputY][inputX].setOccupied(1);				
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	/*
+	/**
 	 * Sets the coordinates of the starting state and the goal state, makes sure that the current state is not the goal state.
 	 */
 	public void setStateRandomXYCoords()
@@ -57,6 +83,9 @@ public class GridWorld {
 		}
 	}
 	
+	/**
+	 * Manually sets the coordinates of the starting and goal states.
+	 */
 	public void setStateXYCoords()
 	{
 		goalStateX = 3;
@@ -65,7 +94,7 @@ public class GridWorld {
 		currentStateY = 5;
 	}
 	
-	/*
+	/**
 	 * Method used for debugging purposes. Will print out the grid, and if the currentState is at the Goal State, will
 	 * print "Target Reached"
 	 * G represents Goal State, C represents Current State, and option set for 0 or " " to represent unoccupied space. 
@@ -93,8 +122,8 @@ public class GridWorld {
 						out.print("[C]");
 						continue;
 					}
-					//out.print("[" + gridWorld[i][j].getOccupied() + "]");
-					out.print("[ ]");
+					out.print("[" + gridWorld[i][j].getOccupied() + "]");
+					//out.print("[ ]");
 				}
 				out.println();
 			}
@@ -104,7 +133,6 @@ public class GridWorld {
 			out.println("Target Reached!");
 		}
 	}
-	
 	
 	/*
 	 * Initializes the Grid to have no occupancy across the grid. Sets it all to 0 values until obstacles are created and placed
@@ -131,8 +159,7 @@ public class GridWorld {
 	
 	/*
 	 * GETTER/SETTERS for the GridWorld.
-	 */
-	
+	 */	
 	/*
 	 * Returns whether or not the robot has reached the goal state.
 	 */
