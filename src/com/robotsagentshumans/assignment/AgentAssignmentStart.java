@@ -17,6 +17,8 @@ public class AgentAssignmentStart {
 		File obstacleFile = new File("obstacle.txt");
 		GridWorld gridworld = new GridWorld(obstacleFile);
 		gridworld.printWorld();
+		Astar aStar = new Astar(gridworld); 
+		aStar.plan(); 
 //		
 //		while (!gridworld.goalStateReached())
 //		{

@@ -13,17 +13,20 @@ public class State
 	private int occupiedState;
 	private int xCoord;
 	private int yCoord;
-	private String stateID;
+	private int stateID;
 	private int reward;
 	
+	private static int assignIdCounter = 0; 
 	public State(int y, int x)
 	{
-		stateID = Integer.toString(y) + Integer.toString(x);
+		stateID = assignIdCounter; //Integer.toString(y) + Integer.toString(x);
 		occupiedState = 0;
 		goalState = false;
 		yCoord = y;
 		xCoord = x;
 		reward = 0;
+		
+		assignIdCounter++; 
 	}
 	
 	public boolean isGoalState()
@@ -54,16 +57,16 @@ public class State
 	{
 		return xCoord;
 	}
-	public String getStateID()
+	public int getStateID()
 	{
 		return stateID;
 	}
 	//This Setter is mainly used only for the Current State
-	public void setStateID(String newID)
+	public void setNewState(State gridWorld)
 	{
-		this.stateID = newID;
-		this.yCoord = Character.getNumericValue(newID.charAt(0));
-		this.xCoord = Character.getNumericValue(newID.charAt(1));
+		this.stateID = gridWorld.stateID;
+		this.yCoord = gridWorld.yCoord; 
+		this.xCoord = gridWorld.xCoord; 
 	}
 	public int getReward()
 	{

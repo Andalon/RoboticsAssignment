@@ -88,10 +88,10 @@ public class GridWorld {
 	 */
 	public void setStateXYCoords()
 	{
-		goalStateX = 3;
-		goalStateY = 3;
-		currentStateX = 5;
-		currentStateY = 5;
+		goalStateX = 9;
+		goalStateY = 5;
+		currentStateX = 0;
+		currentStateY = 1;
 	}
 	
 	/**
@@ -171,12 +171,12 @@ public class GridWorld {
 		}
 		return goalStateReached;
 	}
-	public String getGoalState()
+	public int getGoalState()
 	{
 		return goalState.getStateID();
 	}
 	
-	public String getCurrentState()
+	public int getCurrentState()
 	{
 		//return current state.
 		return currentState.getStateID();
@@ -188,10 +188,11 @@ public class GridWorld {
 	 */
 	public void moveState(String direction)
 	{
-		String newPlace = getHeuristicState(currentState.getStateID(), direction); 
-		if (!(newPlace.equals(currentState.getStateID())))
+		int newStateId = getHeuristicState(currentState.getStateID(), direction); 
+		if (!(newStateId == (currentState.getStateID())))
 		{
-			currentState.setStateID(newPlace);
+			Point p = getXYCoordinatesofState(newStateId); 
+			currentState.setNewState(gridWorld[p.y][p.x]);
 			currentStateX = currentState.getXCoord();
 			currentStateY = currentState.getYCoord();
 		}
@@ -200,21 +201,32 @@ public class GridWorld {
 	/*
 	 * Gets the XY Coordinates of a State based on its stateID (conveniently, the stateID is the XY Coordinates backwards)
 	 */
-	public Point getXYCoordinatesofState(String stateID)
+	public Point getXYCoordinatesofState(int stateID)
 	{
-		int stateY = Character.getNumericValue(stateID.charAt(0));
-		int stateX = Character.getNumericValue(stateID.charAt(1));
-		Point temp = new Point(stateX, stateY);
-		return temp; 
+		for (State[] arr : gridWorld)
+		{
+			for (State s : arr)
+			{
+				if(s.getStateID() == stateID)
+				{
+					return new Point(s.getXCoord(),s.getYCoord()); 
+				}
+			}
+		}
+		return new Point(0,0); 
+		//int stateY = Character.getNumericValue(stateID.charAt(0));
+		//int stateX = Character.getNumericValue(stateID.charAt(1));
+		//Point temp = new Point(stateX, stateY);
+		//return temp; 
 	}
 	/*
 	 * This returns an integer ID value of the next state depending on the move direction. 
 	 * Protects move decisions if object should not move.
 	 */
-	public String getHeuristicState(String state, String moveDirection)
+	public int getHeuristicState(int stateId, String moveDirection)
 	{
 		moveDirection = moveDirection.toLowerCase();
-		Point stateCur = getXYCoordinatesofState(state);
+		Point stateCur = getXYCoordinatesofState(stateId);
 		if (moveDirection.equals("up") && stateCur.y != 0)
 		{
 			stateCur.y -= 1;
@@ -231,7 +243,11 @@ public class GridWorld {
 		{
 			stateCur.x += 1;
 		}
-		String nextState = Integer.toString(stateCur.y) + Integer.toString(stateCur.x);
+		if(gridWorld[stateCur.y][stateCur.x].isOccupied() == 1)
+		{
+			return stateId; 
+		}
+		int nextState = gridWorld[stateCur.y][stateCur.x].getStateID();
 		return nextState;
 	}
 	
