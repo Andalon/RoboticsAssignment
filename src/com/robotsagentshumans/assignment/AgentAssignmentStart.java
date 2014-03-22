@@ -4,31 +4,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import TBSim.TBSim;
-
+/**
+ * Main class that runs the A* and Q-Learning Modules, prints them to .txt files in a direction path format.
+ * @author David
+ */
 public class AgentAssignmentStart {
 
 	public static void main(String[] args)
 	{
-		//File dscFile = new File("walls.dsc");
-		//TBSim simulator = new TBSim("walls.dsc");
-		//simulator.show();
 		writeObstacleFile();
 		File obstacleFile = new File("obstacle.txt");
 		GridWorld gridworld = new GridWorld(obstacleFile);
 		gridworld.printWorld();
 		Astar aStar = new Astar(gridworld); 
 		aStar.plan(); 
-//		
-//		while (!gridworld.goalStateReached())
-//		{
-//			gridworld.moveState("Up");
-//			gridworld.printWorld();
-//			gridworld.moveState("Left");
-//			gridworld.printWorld();
-//		}
-		
 	}
+	
 	//Creating three obstacles for the GridWorld, this is hardcoded, will talk about this.
 	public static void writeObstacleFile()
 	{

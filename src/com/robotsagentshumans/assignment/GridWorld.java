@@ -36,7 +36,6 @@ public class GridWorld {
 	 */
 	public GridWorld(File obstacleFile)
 	{  
-		BufferedReader br = null;
 		gridWorld = new State[10][10];
 		//current state is set randomly here, but can be made to initialize at a set point if desired.
 		//goal state is set randomly here, but can be made to initialize at a set point if desired.

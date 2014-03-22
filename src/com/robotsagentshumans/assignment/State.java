@@ -19,7 +19,8 @@ public class State
 	private static int assignIdCounter = 0; 
 	public State(int y, int x)
 	{
-		stateID = assignIdCounter; //Integer.toString(y) + Integer.toString(x);
+		//Integer.toString(y) + Integer.toString(x);
+		stateID = assignIdCounter;
 		occupiedState = 0;
 		goalState = false;
 		yCoord = y;
