@@ -60,6 +60,7 @@ public class GridWorld {
 				inputX = Character.getNumericValue(input.charAt(1));
 				gridWorld[inputY][inputX].setOccupied(1);				
 			}
+			in.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

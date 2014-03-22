@@ -20,7 +20,7 @@ public class AgentAssignmentStart {
 		aStar.plan(); 
 	}
 	
-	//Creating three obstacles for the GridWorld, this is hardcoded, will talk about this.
+	//Creating three obstacles for the GridWorld, this is hard-coded, will talk about this.
 	public static void writeObstacleFile()
 	{
 		try {
