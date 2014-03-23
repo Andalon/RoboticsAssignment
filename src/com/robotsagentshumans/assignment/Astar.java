@@ -49,7 +49,9 @@ public class Astar {
 	{
 		//Initialize the path object 
 		PathObject po = new PathObject(); 
-		po.hVal = 0; 
+		po.hVal = heuristicVal(currentState);
+		po.gVal = 0; 
+		po.fVal = po.gVal + po.hVal;  
 		po.parent = null; 
 		po.heurStateValue= currentState; 	
 		po.dir = null; 
@@ -159,7 +161,7 @@ public class Astar {
 		}
 		//First reach will be start state
 		if(path.dir == null){
-			System.out.print(path.heurStateValue + ", ");
+			System.out.print("StateID: " + path.heurStateValue + ", ");
 			try {
 				writer.write(path.heurStateValue+" ");
 			} catch (IOException e) {
@@ -169,7 +171,7 @@ public class Astar {
 		}
 		else
 		{
-			System.out.print(path.dir  + ", ");
+			System.out.print(path.dir  + " to stateID: " + path.heurStateValue+", ");
 			try {
 				writer.write(path.dir+" ");
 			} catch (IOException e) {
