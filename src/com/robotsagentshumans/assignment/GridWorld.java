@@ -34,9 +34,9 @@ public class GridWorld {
 	 * Constructor method for creating the GridWorld and setting up the CurrentState, GoalState and Obstacles from file.
 	 * @param obstacleFile
 	 */
-	public GridWorld(File obstacleFile)
+	public GridWorld(File obstacleFile, int nDim)
 	{  
-		gridWorld = new State[10][10];
+		gridWorld = new State[nDim][nDim];
 		//current state is set randomly here, but can be made to initialize at a set point if desired.
 		//goal state is set randomly here, but can be made to initialize at a set point if desired.
 		random = new Random();
@@ -251,6 +251,20 @@ public class GridWorld {
 		return nextState;
 	}
 	
-	
-	
+	public int getGoalXCoord()
+	{
+		return goalStateX;
+	}
+	public int getGoalYCoord()
+	{
+		return goalStateY;
+	}
+	public int getCurrentXCoord()
+	{
+		return currentStateX;
+	}
+	public int getCurrentYCoord()
+	{
+		return currentStateY;
+	}
 }
