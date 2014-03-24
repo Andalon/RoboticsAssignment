@@ -49,7 +49,9 @@ public class Astar {
 	{
 		//Initialize the path object 
 		PathObject po = new PathObject(); 
-		po.hVal = 0; 
+		po.hVal = heuristicVal(currentState);
+		po.gVal = 0; 
+		po.fVal = po.gVal + po.hVal;  
 		po.parent = null; 
 		po.heurStateValue= currentState; 	
 		po.dir = null; 
@@ -97,6 +99,11 @@ public class Astar {
 				//ignore w and keep going
 				continue; 
 			}
+			//Print for example map
+			  System.out.println("StateID: " + w.heurStateValue); 
+			  System.out.println("G(x): " + w.gVal); 
+			  System.out.println("H(x): " + w.hVal); 
+			  System.out.println("F(x): " + w.fVal); 
 			//Generate offspring, calculate f = g + h,
 			//add offspring to either open queue or closed tree
 			generateOffspring(w); 	
@@ -154,7 +161,7 @@ public class Astar {
 		}
 		//First reach will be start state
 		if(path.dir == null){
-			System.out.println(path.heurStateValue);
+			System.out.print("StateID: " + path.heurStateValue + ", ");
 			try {
 				writer.write(path.heurStateValue+" ");
 			} catch (IOException e) {
@@ -164,7 +171,7 @@ public class Astar {
 		}
 		else
 		{
-			System.out.println(path.dir);
+			System.out.print(path.dir  + " to stateID: " + path.heurStateValue+", ");
 			try {
 				writer.write(path.dir+" ");
 			} catch (IOException e) {
@@ -199,10 +206,11 @@ public class Astar {
 			  //F(x) = G(x) + H(x)
 			  kid.fVal = kid.gVal + kid.hVal; 			  			  
 			  
+			  
 			  //If not in closed tree, add it to open queue
 			  if(!closedTree.contains(kid))
 			  {
-				  PQ.add(kid); 
+				  PQ.add(kid); 				
 			  }
 			  else
 			  {
@@ -223,9 +231,14 @@ public class Astar {
 	private double heuristicVal(int heurStateValue) {
 		Point node = getStateCoordinates(heurStateValue); 		
 		Point goal = getStateCoordinates(getSimGoalState()); 
+		//System.out.println("Node " + node.x + ", " + node.y) ;
+		//System.out.println("Goal " + goal.x + ", " + goal.y) ;
 		double dx = Math.abs(node.x - goal.x);
 		double dy = Math.abs(node.y - goal.y);
-		return Math.pow(Math.pow((dx+ dy), 2), (1/2));
+		//System.out.println("dx " + dx) ;
+		//System.out.println("dy " + dy) ;
+		//System.out.println("Euclid Dist " + Math.sqrt(Math.pow((dx+ dy), 2))); 
+		return Math.sqrt(Math.pow((dx+ dy), 2));
 	}
 	private Point getStateCoordinates(int stateValue) {
 		
