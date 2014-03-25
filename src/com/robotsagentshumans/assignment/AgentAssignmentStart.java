@@ -20,6 +20,9 @@ public class AgentAssignmentStart {
 	private static final String DEMO_DSC_TEMPLATE = "demo.dsc";
 	private static final String ROBOT_CLASS = "EDU.gatech.cc.is.abstractrobot.MultiForageN150Sim";
 	private static final String ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.DummyController";
+	private static final String A_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.ARobotController";
+	private static final String QONE_ROBOT_CONTROLLER = "com.robotsagentshumansassignment.Q1RobotController";
+	private static final String QTWO_ROBOT_CONTROLLER = "com.robotsagentshumansassignment.Q2RobotController";
 	private static final String SQUARE_OBSTACLE = "EDU.cmu.cs.coral.simulation.PolygonObstacleSim";
 	private static final String BIN_SIM = "EDU.gatech.cc.is.simulation.BinSim";
 	private static final int GRID_DIM = 10;
@@ -37,20 +40,39 @@ public class AgentAssignmentStart {
 		gridworld.printWorld();
 		
 		//Run the AStar Path Planner on the Gridworld
-		Astar aStar = new Astar(gridworld); 
-		aStar.plan();
-		System.out.println("Press Enter to begin A* Simulated Path");
+		//Astar aStar = new Astar(gridworld); 
+		//aStar.plan();
+		
+		QLearner learner = new QLearner(gridworld);
+		int[][] qtable = learner.getQTable();
+		
+		//QLearner qagent = new QLearner(qtable);
+		//qagent.test();
+		
+
 		try {
 			//Run the simulator on the AStar Path Planning route
+			System.out.println("Press Enter to begin A* Simulated Path");
 			dummyInput = consoleIn.readLine();
 			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
-			TBSim simulator = new TBSim("aStarUpdate.dsc");
-			simulator.show();
+			TBSim aStarSimulator = new TBSim("aStarUpdate.dsc");
+			aStarSimulator.show();
 			
-			//Run the simulator on the Q-Learning Route Path 1
-			
-			//Run the simulator on the Q-Learning Route Path 2
-			
+//			//Run the simulator on the Q-Learning Route Path 1
+//			System.out.println("Press Enter to begin Q-learning Simulated Path 1");
+//			dummyInput = consoleIn.readLine();
+//			//manuallyUpdateDSC(gridworld, "qlearningPathOne.dsc");
+//			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
+//			TBSim qOneSimulator = new TBSim("aStarUpdate.dsc");
+//			qOneSimulator.show();
+//			
+//			//Run the simulator on the Q-Learning Route Path 2
+//			System.out.println("Press Enter to begin Q-learning Simulated Path 2");
+//			dummyInput = consoleIn.readLine();
+//			//manuallyUpdateDSC(gridworld, "qlearningPathTwo.dsc");
+//			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
+//			TBSim qTwoSimulator = new TBSim("aStarUpdate.dsc");
+//			qTwoSimulator.show();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -103,8 +125,22 @@ public class AgentAssignmentStart {
 			double obstacleLocY;
 			
 			//Attach the robot to the current configuration
-			out.write("robot " + ROBOT_CLASS + " " + ROBOT_CONTROLLER + " " + startX + " " + startY 
-					+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
+			if (newUpdateName.equals("aStarUpdate.dsc"))
+			{
+				//A_ROBOT_CONTROLLER
+				out.write("robot " + ROBOT_CLASS + " " + ROBOT_CONTROLLER + " " + startX + " " + startY 
+						+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
+			}
+			else if (newUpdateName.equals("qlearningPathOne.dsc"))
+			{
+				out.write("robot " + ROBOT_CLASS + " " + QONE_ROBOT_CONTROLLER + " " + startX + " " + startY 
+						+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
+			}
+			else if (newUpdateName.equals("qlearningPathTwo.dsc"))
+			{
+				out.write("robot " + ROBOT_CLASS + " " + QTWO_ROBOT_CONTROLLER + " " + startX + " " + startY 
+						+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
+			}
 			
 			out.write("//Setting up the Obstacles\n");
 			while (in.hasNext())
