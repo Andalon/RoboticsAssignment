@@ -12,7 +12,7 @@ maxtimestep 100
 background xFFFFFF
 
 //Grid values, setting it: grid xNum yNum
-robot EDU.gatech.cc.is.abstractrobot.MultiForageN150Sim com.robotsagentshumans.assignment.DummyController 0.5 8.5 0 x000000 x000000 2
+robot EDU.gatech.cc.is.abstractrobot.MultiForageN150Sim com.robotsagentshumans.assignment.DummyController 0.5 8.5 0 x000000 xFF0000 2
 
 //Setting up the Obstacles
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 2.5 9.5 0 0.5 xC0C0C0 x000000 2

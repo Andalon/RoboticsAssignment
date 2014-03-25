@@ -32,7 +32,7 @@ public class DummyController extends ControlSystemMFN150
 	public final static boolean DEBUG = true;
 	private final static double LOW_RANGE = 0.001;
 	private final static double SOUTH_RAD_VALUE = 4.712388980384689576939650749193;
-	private final static double NORTH_RAD_VALUE = 0.0;
+	private final static double NORTH_RAD_VALUE = 1.5707963267948966192313216916398;
 	private final static double EAST_RAD_VALUE = 0.0;
 	private final static double WEST_RAD_VALUE = 3.1415926535897932384626433832795;
 	private NodeVec2	turret_configuration;
