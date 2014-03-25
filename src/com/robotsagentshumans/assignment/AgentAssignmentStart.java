@@ -40,11 +40,11 @@ public class AgentAssignmentStart {
 		gridworld.printWorld();
 		
 		//Run the AStar Path Planner on the Gridworld
-		//Astar aStar = new Astar(gridworld); 
-		//aStar.plan();
+		Astar aStar = new Astar(gridworld); 
+		aStar.plan();
 		
-		QLearner learner = new QLearner(gridworld);
-		int[][] qtable = learner.getQTable();
+		//QLearner learner = new QLearner(gridworld);
+		//int[][] qtable = learner.getQTable();
 		
 		//QLearner qagent = new QLearner(qtable);
 		//qagent.test();
