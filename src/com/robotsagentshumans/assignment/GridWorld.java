@@ -1,7 +1,6 @@
 package com.robotsagentshumans.assignment;
 
 import java.awt.Point;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -16,10 +15,6 @@ import java.util.Scanner;
  */
 public class GridWorld {
 
-	private static final String UP_MOVE = "up";
-	private static final String DOWN_MOVE = "down";
-	private static final String LEFT_MOVE = "left";
-	private static final String RIGHT_MOVE = "right";
 	private boolean goalStateReached;
 	private State currentState;
 	private State goalState;
@@ -123,7 +118,6 @@ public class GridWorld {
 						continue;
 					}
 					out.print("[" + gridWorld[i][j].getOccupied() + "]");
-					//out.print("[ ]");
 				}
 				out.println();
 			}
@@ -178,7 +172,6 @@ public class GridWorld {
 	
 	public int getCurrentState()
 	{
-		//return current state.
 		return currentState.getStateID();
 	}
 	
@@ -214,10 +207,6 @@ public class GridWorld {
 			}
 		}
 		return new Point(0,0); 
-		//int stateY = Character.getNumericValue(stateID.charAt(0));
-		//int stateX = Character.getNumericValue(stateID.charAt(1));
-		//Point temp = new Point(stateX, stateY);
-		//return temp; 
 	}
 	/*
 	 * This returns an integer ID value of the next state depending on the move direction. 

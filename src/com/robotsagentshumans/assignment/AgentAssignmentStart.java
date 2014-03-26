@@ -19,7 +19,6 @@ public class AgentAssignmentStart {
 	private static final String OBSTACLE_FILE = "obstacle.txt";
 	private static final String DEMO_DSC_TEMPLATE = "demo.dsc";
 	private static final String ROBOT_CLASS = "EDU.gatech.cc.is.abstractrobot.MultiForageN150Sim";
-	private static final String ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.DummyController";
 	private static final String A_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.ARobotController";
 	private static final String QONE_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.Q1RobotController";
 	private static final String QTWO_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.Q2RobotController";
@@ -43,13 +42,14 @@ public class AgentAssignmentStart {
 		Astar aStar = new Astar(gridworld); 
 		aStar.plan();
 		
-		//QLearner learner = new QLearner(gridworld);
-		//int[][] qtable = learner.getQTable();
-//		
-		//QLearner qagent = new QLearner(qtable);
-		//qagent.test();
-		
+		//Run the QLearner on the GridWorld. For the purposes of this Assignment, the Goal state is at (9,5) and the Initial States
+		//are at (0,1) and (0, 9)
+		QLearner learner = new QLearner(gridworld);
+		int[][] qtable = learner.getQTable();
 
+		QLearner qagent = new QLearner(qtable);
+		qagent.test();
+		
 		try {
 			//Run the simulator on the AStar Path Planning route
 			System.out.println("Press Enter to begin A* Simulated Path");
@@ -57,23 +57,16 @@ public class AgentAssignmentStart {
 			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
 			TBSim aStarSimulator = new TBSim("aStarUpdate.dsc");
 			aStarSimulator.show();
-
-//			consoleIn = new BufferedReader(new InputStreamReader(System.in));
-			
+		
 			//Run the simulator on the Q-Learning Route Path 1
-//			System.out.println("Press Enter to begin Q-learning Simulated Path 1");
-//			dummyInput = consoleIn.readLine();
-//			manuallyUpdateDSC(gridworld, "qlearningPathOne.dsc");
-//			TBSim qOneSimulator = new TBSim("qlearningPathOne.dsc");
-//			qOneSimulator.show();
-//			
-//			//Run the simulator on the Q-Learning Route Path 2
-//			System.out.println("Press Enter to begin Q-learning Simulated Path 2");
-//			dummyInput = consoleIn.readLine();
-//			//manuallyUpdateDSC(gridworld, "qlearningPathTwo.dsc");
-//			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
-//			TBSim qTwoSimulator = new TBSim("aStarUpdate.dsc");
-//			qTwoSimulator.show();
+			manuallyUpdateDSC(gridworld, "qlearningPathOne.dsc");
+			TBSim qOneSimulator = new TBSim("qlearningPathOne.dsc");
+			qOneSimulator.show();
+
+			//Run the simulator on the Q-Learning Route Path 2
+			manuallyUpdateDSC(gridworld, "qlearningPathTwo.dsc");
+			TBSim qTwoSimulator = new TBSim("qlearningPathTwo.dsc");
+			qTwoSimulator.show();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -93,7 +86,7 @@ public class AgentAssignmentStart {
 			//Square Obstacle
 			out.write("72 73 74 82 83 84 92 93 94\n");
 			//Rectangle Obstacle
-			out.write("37 47 57 67");
+			out.write("07 17 27 37 47 57 67 77 87");
 			out.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -111,6 +104,8 @@ public class AgentAssignmentStart {
 			FileWriter out = new FileWriter(newUpdateName, true);
 			Scanner in = new Scanner(new File(OBSTACLE_FILE));
 			double startX = gworld.getCurrentXCoord() + FINAL_PLACEMENT;
+			double startQ2X = 0 + FINAL_PLACEMENT;
+			double startQ2Y = GRID_DIM - (9 + FINAL_PLACEMENT);
 			double startY = GRID_DIM - (gworld.getCurrentYCoord() + FINAL_PLACEMENT);
 			double goalX = gworld.getGoalXCoord() + FINAL_PLACEMENT;
 			double goalY = GRID_DIM - (gworld.getGoalYCoord() + FINAL_PLACEMENT);
@@ -139,7 +134,7 @@ public class AgentAssignmentStart {
 			}
 			else if (newUpdateName.equals("qlearningPathTwo.dsc"))
 			{
-				out.write("robot " + ROBOT_CLASS + " " + QTWO_ROBOT_CONTROLLER + " " + startX + " " + startY 
+				out.write("robot " + ROBOT_CLASS + " " + QTWO_ROBOT_CONTROLLER + " " + startQ2X + " " + startQ2Y 
 						+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
 			}
 			
@@ -198,7 +193,6 @@ public class AgentAssignmentStart {
 			oldFile.close();
 			newFile.flush();
 			newFile.close();
-			
 		}
 		catch (IOException e)
 		{

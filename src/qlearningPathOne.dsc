@@ -33,10 +33,15 @@ object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 4.5 1.5 0 0.5 xC0C0C0 x000
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 2.5 0.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 3.5 0.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 4.5 0.5 0 0.5 xC0C0C0 x000000 2
+object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 9.5 0 0.5 xC0C0C0 x000000 2
+object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 8.5 0 0.5 xC0C0C0 x000000 2
+object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 7.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 6.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 5.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 4.5 0 0.5 xC0C0C0 x000000 2
 object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 3.5 0 0.5 xC0C0C0 x000000 2
+object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 2.5 0 0.5 xC0C0C0 x000000 2
+object EDU.cmu.cs.coral.simulation.PolygonObstacleSim 7.5 1.5 0 0.5 xC0C0C0 x000000 2
 
 //Setting the 'goal' location
 object EDU.gatech.cc.is.simulation.BinSim 9.5 4.5 0 0.5 xFF0000 xFF0000 4

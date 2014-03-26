@@ -5,7 +5,6 @@ package com.robotsagentshumans.assignment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +12,6 @@ import java.util.Scanner;
 import EDU.gatech.cc.is.abstractrobot.ControlSystemMFN150;
 import EDU.gatech.cc.is.clay.NodeVec2;
 import EDU.gatech.cc.is.clay.v_FixedPoint_;
-import EDU.gatech.cc.is.clay.v_GlobalPosition_r;
 import EDU.gatech.cc.is.util.Vec2;
 
 
@@ -39,10 +37,15 @@ public class Q2RobotController extends ControlSystemMFN150
 	private String startState = "";
 	private String endState = "";
 	private List<String> directions = new ArrayList<String>();
+	private List<String> statePaths = new ArrayList<String>();
 	private double goalStateX = 0;
 	private double goalStateY = 0;
 	private double currentStateX = 0;
 	private double currentStateY = 0;
+	private double currentBuildX = 0;
+	private double currentBuildY = 0;
+	private double statePathX = 0;
+	private double statePathY = 0;
 	
 	private int directionCount = 0;
 	private double currentHeadingSet = 0;
@@ -56,37 +59,89 @@ public class Q2RobotController extends ControlSystemMFN150
 	public void configure()
 	{
 		File configurableFile = new File("qLearnPath1.txt");		
-		
 		abstract_robot.setBaseSpeed(0.4*abstract_robot.MAX_TRANSLATION);
 		
 		Scanner in;
-		try {
+		try
+		{
 			in = new Scanner(configurableFile);
-			startState = in.next();
-			
+			startState = removeCommaValue(in.next());
 			while (in.hasNext())
 			{
+				//Goal State
 				if (in.hasNextInt())
 				{
 					endState = in.next();
-					break;
 				}
-				directions.add(in.next());
+				else
+				{
+					statePaths.add(removeCommaValue(in.next()));
+				}
 			}
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
 		}
 		
 		System.out.println("Start State: " + startState);
-		System.out.println("Directions: " + directions);
+		System.out.println("Directions: " + statePaths);
 		System.out.println("End State: " + endState);
 		
 		currentStateY = Character.getNumericValue(startState.charAt(0));
 		currentStateX = Character.getNumericValue(startState.charAt(1));
 		goalStateY = Character.getNumericValue(endState.charAt(0));
 		goalStateX = Character.getNumericValue(endState.charAt(1));
+		
+		//convert states to directions
+		currentBuildX = currentStateX;
+		currentBuildY = currentStateY;
+		
+		for (int i=0; i<statePaths.size(); i++)
+		{
+			statePathY = Character.getNumericValue(statePaths.get(i).charAt(0));
+			statePathX = Character.getNumericValue(statePaths.get(i).charAt(1));
+			
+			if (statePathX > currentBuildX && statePathY == currentBuildY)
+			{
+				directions.add("Right");
+			}
+			else if (statePathX < currentBuildX && statePathY == currentBuildY)
+			{
+				directions.add("Left");
+			}
+			else if (statePathY > currentBuildY && statePathX == currentBuildX)
+			{
+				directions.add("Down");
+			}
+			else if (statePathY < currentBuildY && statePathX == currentBuildX)
+			{
+				directions.add("Up");
+			}
+			
+			currentBuildX = statePathX;
+			currentBuildY = statePathY;
+		}
+		
+		statePathY = goalStateY;
+		statePathX = goalStateX;
+		
+		if (statePathX > currentBuildX && statePathY == currentBuildY)
+		{
+			directions.add("Right");
+		}
+		else if (statePathX < currentBuildX && statePathY == currentBuildY)
+		{
+			directions.add("Left");
+		}
+		else if (statePathY > currentBuildY && statePathX == currentBuildX)
+		{
+			directions.add("Down");
+		}
+		else if (statePathY < currentBuildY && statePathX == currentBuildX)
+		{
+			directions.add("Up");
+		}
 		
 		currentStateY = 10 - (currentStateY + 0.5);
 		currentStateX = currentStateX + 0.5;
@@ -107,7 +162,6 @@ public class Q2RobotController extends ControlSystemMFN150
 		System.out.println("Start State X,Y = " + currentStateX + "," + currentStateY);
 		System.out.println("goalState X,Y = " + goalStateX + "," + goalStateY);
 		System.out.println("HOMebase? " + homeBaseGoalLoc);
-		
 	}
 
 	/**
@@ -193,4 +247,15 @@ public class Q2RobotController extends ControlSystemMFN150
 
 		return(CSSTAT_OK);
 	}
+	
+	public String removeCommaValue(String value)
+	{
+		String newString = "";
+		for (int i=0; i<value.length()-1; i++)
+		{
+			newString = newString + value.charAt(i);
+		}
+		return newString;
+	}
+	
 }
