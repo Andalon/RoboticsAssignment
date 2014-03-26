@@ -21,8 +21,8 @@ public class AgentAssignmentStart {
 	private static final String ROBOT_CLASS = "EDU.gatech.cc.is.abstractrobot.MultiForageN150Sim";
 	private static final String ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.DummyController";
 	private static final String A_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.ARobotController";
-	private static final String QONE_ROBOT_CONTROLLER = "com.robotsagentshumansassignment.Q1RobotController";
-	private static final String QTWO_ROBOT_CONTROLLER = "com.robotsagentshumansassignment.Q2RobotController";
+	private static final String QONE_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.Q1RobotController";
+	private static final String QTWO_ROBOT_CONTROLLER = "com.robotsagentshumans.assignment.Q2RobotController";
 	private static final String SQUARE_OBSTACLE = "EDU.cmu.cs.coral.simulation.PolygonObstacleSim";
 	private static final String BIN_SIM = "EDU.gatech.cc.is.simulation.BinSim";
 	private static final int GRID_DIM = 10;
@@ -45,7 +45,7 @@ public class AgentAssignmentStart {
 		
 		//QLearner learner = new QLearner(gridworld);
 		//int[][] qtable = learner.getQTable();
-		
+//		
 		//QLearner qagent = new QLearner(qtable);
 		//qagent.test();
 		
@@ -57,13 +57,14 @@ public class AgentAssignmentStart {
 			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
 			TBSim aStarSimulator = new TBSim("aStarUpdate.dsc");
 			aStarSimulator.show();
+
+//			consoleIn = new BufferedReader(new InputStreamReader(System.in));
 			
-//			//Run the simulator on the Q-Learning Route Path 1
+			//Run the simulator on the Q-Learning Route Path 1
 //			System.out.println("Press Enter to begin Q-learning Simulated Path 1");
 //			dummyInput = consoleIn.readLine();
-//			//manuallyUpdateDSC(gridworld, "qlearningPathOne.dsc");
-//			manuallyUpdateDSC(gridworld, "aStarUpdate.dsc");
-//			TBSim qOneSimulator = new TBSim("aStarUpdate.dsc");
+//			manuallyUpdateDSC(gridworld, "qlearningPathOne.dsc");
+//			TBSim qOneSimulator = new TBSim("qlearningPathOne.dsc");
 //			qOneSimulator.show();
 //			
 //			//Run the simulator on the Q-Learning Route Path 2
@@ -128,7 +129,7 @@ public class AgentAssignmentStart {
 			if (newUpdateName.equals("aStarUpdate.dsc"))
 			{
 				//A_ROBOT_CONTROLLER
-				out.write("robot " + ROBOT_CLASS + " " + ROBOT_CONTROLLER + " " + startX + " " + startY 
+				out.write("robot " + ROBOT_CLASS + " " + A_ROBOT_CONTROLLER + " " + startX + " " + startY 
 						+ " " + translationVal + " " + robotColor + " " + robotSensorColor + " 2\n\n");
 			}
 			else if (newUpdateName.equals("qlearningPathOne.dsc"))

@@ -17,3 +17,6 @@
 /QLearner.class
 /AgentSimulationStart.class
 /Pair.class
+/Q1RobotController.class
+/Q2RobotController.class
+/ARobotController.class

@@ -2,8 +2,11 @@ package com.robotsagentshumans.assignment;
 
 //package edu.ucf.cap6671.learners.qlearning;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Random;
 
@@ -12,13 +15,17 @@ public class QLearner {
 	private final double GAMMA = 0.8;
 	private final double ALPHA = 1;
     private final int ITERATIONS = 900;
-    private final int[] INITIAL_STATES = new int[] {55,0};
+    private final int[] INITIAL_STATES = new int[] {10,90};
 
     private int[][] q;
     private int currentState = 0;
 
     private File logFile;
     private PrintStream logger;
+    
+    private File logPath;
+    private PrintStream pathlogger;
+    private FileWriter fileWriter;
     
     
     public QLearner(GridWorld w){
@@ -97,23 +104,44 @@ public class QLearner {
         System.out.println("Shortest routes from initial states:");
         for(int i = 0; i < INITIAL_STATES.length; i++)
         {
-            currentState = INITIAL_STATES[i];
-            do
-            {
-            	int maxAction = 0;
-            	for(int j = 1; j < 100; ++j){
-            		if(q[currentState][j] > q[currentState][maxAction]){
-            			maxAction = j;
-            		}
-            	}
-                System.out.print(currentState + ", ");
-                currentState = maxAction;
-            }while(currentState != 33);
-            System.out.println(currentState);
+        	try {
+				fileWriter = new FileWriter("qLearnPath" + i + ".txt", false);
+	            currentState = INITIAL_STATES[i];
+	            
+	            do
+	            {
+	            	int maxAction = 0;
+	            	for(int j = 1; j < 100; ++j){
+	            		if(q[currentState][j] > q[currentState][maxAction]){
+	            			maxAction = j;
+	            		}
+	            	}
+	            	System.out.print(currentState + ", ");
+	                fileWriter.write(currentState + ", ");
+	                currentState = maxAction;
+	            }while(currentState != 59);
+	            System.out.println(currentState);
+	            fileWriter.write(currentState + "\n");
+	            fileWriter.flush();
+	            fileWriter.close();
+        	} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error in creating QLearning Path text files");
+			}
         }
 
         return;
+        
     }
+	
+	/* private void logpath() {
+			pathlogger.println("print the short path");
+			for(int i = 0; i != 33 ; ++i)
+			{
+				pathlogger.print(currentState);
+			}
+		}
+*/
     
     private void episode(final int initialState)
     {
@@ -129,7 +157,7 @@ public class QLearner {
             ++episodecounter;
             coord = QEnvironment.getPositionForState(currentState); 
             rValue = env.getRewards()[coord.getFirst()][coord.getSecond()];
-        }while(rValue !=  100);// && episodecounter <=150);
+        }while(rValue !=  100 && episodecounter <=500);
               
         // When goal is reached, Run through the set once more for convergence.
         for(int i = 0; i < env.getSize(); i++)
@@ -158,7 +186,7 @@ public class QLearner {
             	}
             }while(nextAction != oldAction);
         }
-        else if(transitionProbability < 0.9){
+        else if(transitionProbability < 0.9 && transitionProbability > 0.6 ){
         	// Randomly choose a possible action connected to the current state.
         	do{
         		possibleAction = getRandomAction(env.getSize() * env.getSize());
@@ -212,17 +240,7 @@ public class QLearner {
         return action;
     }
     
-//    private void initialize()
-//    {
-//        for(int i = 0; i < env.getSize(); i++)
-//        {
-//            for(int j = 0; j < env.getSize(); j++)
-//            {
-//                q[i][j] = 0;
-//            } // j
-//        } // i
-//        return;
-//    }
+
     
     private int maximum(final int State, final boolean ReturnIndexOnly)
     {
