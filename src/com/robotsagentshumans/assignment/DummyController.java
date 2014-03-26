@@ -30,10 +30,10 @@ import EDU.gatech.cc.is.util.Vec2;
 public class DummyController extends ControlSystemMFN150
 	{
 	public final static boolean DEBUG = true;
-	private final static double LOW_RANGE = 0.001;
+	private final static double LOW_RANGE = 0.005;
 	private final static double SOUTH_RAD_VALUE = 4.712388980384689576939650749193;
 	private final static double NORTH_RAD_VALUE = 1.5707963267948966192313216916398;
-	private final static double EAST_RAD_VALUE = 0.0;
+	private final static double EAST_RAD_VALUE = 6.283185307179586476925286766559;
 	private final static double WEST_RAD_VALUE = 3.1415926535897932384626433832795;
 	private NodeVec2	turret_configuration;
 	private NodeVec2	steering_configuration;
@@ -53,6 +53,11 @@ public class DummyController extends ControlSystemMFN150
 	private double currentStateY = 0;
 	
 	private DecimalFormat df = new DecimalFormat("#.0");
+	private int directionCount = 0;
+	private double currentHeadingSet = 0;
+	private double newLocX = 0;
+	private double newLocY = 0;
+	private boolean goalMet = false;
 	
 	/**
 	 * Configure the control system using Clay.
@@ -99,8 +104,16 @@ public class DummyController extends ControlSystemMFN150
 		goalStateY = 10 - (goalStateY + 0.5);
 		goalStateX = goalStateX + 0.5;
 		
+		//Change strings to all lower case
+		String x;
+		for (int i=0; i<directions.size(); i++)
+		{
+			x = directions.get(i).toLowerCase();
+			directions.remove(i);
+			directions.add(i, x);
+		}
 		
-		
+		System.out.println("Direction List: " + directions);
 		NodeVec2 homeBaseGoalLoc = new v_FixedPoint_(goalStateX, goalStateY);
 		System.out.println("Start State X,Y = " + currentStateX + "," + currentStateY);
 		System.out.println("goalState X,Y = " + goalStateX + "," + goalStateY);
@@ -117,38 +130,79 @@ public class DummyController extends ControlSystemMFN150
 		Vec2 result;
 		Vec2 location;
 		long curr_time = abstract_robot.getTime();
-		
-		abstract_robot.setSpeed(curr_time, 0.4*abstract_robot.MAX_TRANSLATION);
 		location = abstract_robot.getPosition(curr_time);
+		if (goalMet == false)
+		{
+			abstract_robot.setSpeed(curr_time, 0.4*abstract_robot.MAX_TRANSLATION);
+		}
+		else
+		{
+			abstract_robot.setSpeed(curr_time, 0);
+		}
 		
-		//1.499 && location.x < 1.51
-		//if ((Double.parseDouble(df.format(location.x))) == 1.5){
-		if (location.x > (currentStateX - LOW_RANGE + 1.0) && location.x < (currentStateX + LOW_RANGE + 1.0))
+		if (location.x > (currentStateX - LOW_RANGE) && location.x <= (currentStateX + LOW_RANGE) && 
+				location.y > (currentStateY - LOW_RANGE) && location.y <= (currentStateY + LOW_RANGE) && goalMet == false)
 		{
 			abstract_robot.setSpeed(curr_time, 0);
 			System.out.println("Current Heading" + abstract_robot.getSteerHeading(curr_time));
-			abstract_robot.setSteerHeading(curr_time, SOUTH_RAD_VALUE);
-			if (abstract_robot.getSteerHeading(curr_time) == SOUTH_RAD_VALUE)
+			
+			if (location.x > (goalStateX - LOW_RANGE) && location.x <= (goalStateX + LOW_RANGE) &&
+					location.y > (goalStateY - LOW_RANGE) && location.y <= (goalStateY + LOW_RANGE))
 			{
-				currentStateX = currentStateX + 2.0;
+				System.out.println("Reached Goal, congratulations!");
+				goalMet = true;
+			}
+			
+			else if (directions.get(directionCount).equals("up"))
+			{
+				currentHeadingSet = NORTH_RAD_VALUE;
+				abstract_robot.setSteerHeading(curr_time, currentHeadingSet);
+				newLocX = currentStateX;
+				newLocY = currentStateY + 1.0;
+				
+			}
+			else if (directions.get(directionCount).equals("down"))
+			{
+				currentHeadingSet = SOUTH_RAD_VALUE;
+				abstract_robot.setSteerHeading(curr_time, currentHeadingSet);
+				newLocX = currentStateX;
+				newLocY = currentStateY - 1.0;
+			}
+			else if (directions.get(directionCount).equals("left"))
+			{
+				currentHeadingSet = WEST_RAD_VALUE;
+				abstract_robot.setSteerHeading(curr_time, currentHeadingSet);
+				newLocX = currentStateX - 1.0;
+				newLocY = currentStateY;
+			}
+			else if (directions.get(directionCount).equals("right"))
+			{
+				currentHeadingSet = EAST_RAD_VALUE;
+				abstract_robot.setSteerHeading(curr_time, currentHeadingSet);
+				newLocX = currentStateX + 1.0;
+				newLocY = currentStateY;
+			}
+			
+			if (currentHeadingSet == EAST_RAD_VALUE)
+			{
+				if (abstract_robot.getSteerHeading(curr_time) == currentHeadingSet || abstract_robot.getSteerHeading(curr_time) == 0.0)
+				{
+					directionCount++;
+					currentStateX = newLocX;
+					currentStateY = newLocY;
+					abstract_robot.setSpeed(curr_time, 0.4*abstract_robot.MAX_TRANSLATION);
+				}
+			}
+			
+			else if (currentHeadingSet == abstract_robot.getSteerHeading(curr_time))
+			{
+				directionCount++;
+				currentStateX = newLocX;
+				currentStateY = newLocY;
+				abstract_robot.setSpeed(curr_time, 0.4*abstract_robot.MAX_TRANSLATION);
 			}
 		}
-		
-		if (location.y > (currentStateY - LOW_RANGE - 1.0) && location.y < (currentStateY + LOW_RANGE - 1.0))
-		{
-			abstract_robot.setSpeed(curr_time, 0);
-			System.out.println("Current Heading" + abstract_robot.getSteerHeading(curr_time));
-			abstract_robot.setSteerHeading(curr_time, WEST_RAD_VALUE);
-			if (abstract_robot.getSteerHeading(curr_time) == WEST_RAD_VALUE)
-			{
-				currentStateY = currentStateY + 2.0;
-			}
-		}
-		
-		System.out.println("Coordinates?" + location.x + "," + location.y);
 
 		return(CSSTAT_OK);
 	}
-	
-	
-	}
+}
